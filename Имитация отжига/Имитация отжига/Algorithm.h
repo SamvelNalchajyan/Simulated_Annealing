@@ -47,15 +47,33 @@ bool Transition(double dE, double t)
 }
 
 //curr - текущее состояние
+
 Condition GenerateCandidate(Condition curr)
 {
+	double k_x = 0.000001;
+	double k_y = 0.000001;
+	Condition res;
+
+	res.x = curr.x + (k_x * ((2 * rand()) - RAND_MAX) * (rand() % 11));
+	res.y = curr.y + (k_y * ((2 * rand()) - RAND_MAX) * (rand() % 11));
+
+	return res;
+}
+
+/*
+Condition GenerateCandidate(Condition curr)
+{
+
 	double k_x = 0.00001;
 	double k_y = 0.00001;
 	Condition res;
+
 	res.x = curr.x + k_x * ((2 * rand()) - RAND_MAX);
 	res.y = curr.y + k_y * ((2 * rand()) - RAND_MAX);
+
 	return res;
 }
+*/
 
 //start - начальная точка
 //initialTemperature - начальная температура
