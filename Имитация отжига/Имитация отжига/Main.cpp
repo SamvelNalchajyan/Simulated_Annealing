@@ -10,16 +10,23 @@ int main()
 	setlocale(LC_CTYPE, "Russian");
 	/*-------------------------------------------------*/
 	std::cout << "¬ведите начальную точку" << std::endl;
-	Condition start;
-	std::cin >> start.x >> start.y;
+	std::vector<double> start;
+	double x0, y0;
+	std::cin >> x0 >> y0;
+	start.push_back(x0);
+	start.push_back(y0);
+	//std::cout << std::endl << start.size() << std::endl;
+	std::cout << std::endl << "¬ведите границы аргументов" << std::endl;
+	double x_min, x_max, y_min, y_max;
+	std::cin >> x_min >> x_max >> y_min >> y_max;
 	std::cout << std::endl << "¬ведите начальную и конечную температуру" << std::endl;
 	double t_max, t_min;
 	std::cin >> t_max >> t_min;
-	Condition res;
-	for (int i = 0; i < 15; i++)
+	std::vector<double> res;
+	for (int i = 0; i < 10; i++)
 	{
-		res = SimulatedAnnealing(start, t_max, t_min);
-		std::cout << std::endl << "ќтвет - (" << res.x << ", " << res.y << ")" << std::endl;
+		res = SimulatedAnnealing(start, t_max, t_min, x_min, x_max, y_min, y_max);
+		std::cout << std::endl << "ќтвет - (" << res[0] << ", " << res[1] << ")" << std::endl;
 	}
 	/*-------------------------------------------------*/
 	system("pause");
