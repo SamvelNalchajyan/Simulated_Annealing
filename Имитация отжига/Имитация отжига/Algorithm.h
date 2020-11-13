@@ -49,8 +49,8 @@ double TestFunction(std::vector<double> argument)
 	{
 		double x = argument[0];
 		double y = argument[1];
-		//return (1 + sin(10 * x) + cos(2 * x) + cos(2 * x + 2 * y) + cos(2 * y) + sin(20 * y) + y * y);
-		return ((1 - x) * (1 - x) + 100 * (y - x * x) * (y - x * x));
+		return (1 + sin(10 * x) + cos(2 * x) + cos(2 * x + 2 * y) + cos(2 * y) + sin(20 * y) + y * y);
+		//return ((1 - x) * (1 - x) + 100 * (y - x * x) * (y - x * x));
 	}
 	else
 	{
@@ -58,12 +58,20 @@ double TestFunction(std::vector<double> argument)
 	}
 }
 
+double FRand(double min, double max)
+{
+	double tmp = static_cast<double>(rand()) / RAND_MAX;
+	return min + tmp * (max - min);
+}
+
 //t_0 - начальная температура
 //i - номер итерации
 double Temperature(double t_0, int i)
 {
 	double k = 1; 
-	return t_0 / (k * i);
+	//return t_0 / (k * i);
+	return t_0 / (k * i * i);
+	//return t_0 / (k * std::sqrt(i));
 }
 
 //dE - разность целевой функции
@@ -95,11 +103,15 @@ std::vector<double> GenerateCandidate(std::vector<double> curr, double x_min, do
 {
 	double k_x = 0.000001;
 	double k_y = 0.000001;
-	std::vector<double> res;
 
+	std::vector<double> res;
+	
 	double x = curr[0] + (k_x * ((2 * rand()) - RAND_MAX) * (rand() % 11));
 	double y = curr[1] + (k_y * ((2 * rand()) - RAND_MAX) * (rand() % 11));
 
+	//Второй вариант (около 10 000 000 итераций)(0,0001)
+	//double x = curr[0] + FRand(-1.0, 1.0) * 0.0001;
+	//double y = curr[1] + FRand(-1.0, 1.0) * 0.0001;
 	if (x >= x_min && x <= x_max)
 	{
 		res.push_back(x);
@@ -167,8 +179,8 @@ std::vector<double> SimulatedAnnealing(std::vector<double> start, double initial
 	while (t > endTemperature)
 	{
 		candidate = GenerateCandidate(s_prev, x_min, x_max, y_min, y_max);
-		//dE = TestFunction(candidate) - TestFunction(s_prev);
-		dE = horrific_function(candidate) - horrific_function(s_prev);
+		dE = TestFunction(candidate) - TestFunction(s_prev);
+		//dE = horrific_function(candidate) - horrific_function(s_prev);
 		if (Transition(dE, t))
 		{
 			s_curr = candidate;
