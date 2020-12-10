@@ -69,8 +69,8 @@ double FRand(double min, double max)
 double Temperature(double t_0, int i)
 {
 	double k = 1; 
-	//return t_0 / (k * i);
-	return t_0 / (k * i * i);
+	return t_0 / (k * i);
+	//return t_0 / (k * i * i);
 	//return t_0 / (k * std::sqrt(i));
 }
 
