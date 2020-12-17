@@ -2,13 +2,14 @@
 #define _USE_MATH_DEFINES
 #include <cmath>
 #include <vector>
+#include "objective_functions.h"
 
 struct Condition
 {
 	double x;
 	double y;
 };
-
+/*
 std::vector<std::vector<double>> A_matrix = { {-0.940, -0.536, -0.743}, {-0.502,  0.804,  0.769}, {-0.428, -0.789,  0.204} };
 std::vector<std::vector<double>> B_matrix = { { 0.590,  0.160, -0.681}, { 0.387,  0.945, -0.195}, {-0.231,  0.152,  0.295} };
 std::vector<std::vector<double>> C_matrix = { {-0.896, -0.613, -0.463}, { 0.038, -0.428, -0.714}, { 0.103,  0.741, -0.317} };
@@ -57,7 +58,7 @@ double TestFunction(std::vector<double> argument)
 		throw - 1;
 	}
 }
-
+*/
 double FRand(double min, double max)
 {
 	double tmp = static_cast<double>(rand()) / RAND_MAX;
@@ -103,11 +104,15 @@ std::vector<double> GenerateCandidate(std::vector<double> curr, double x_min, do
 {
 	double k_x = 0.000001;
 	double k_y = 0.000001;
+	//double k_z = 0.000001;
+	//double k_k = 0.000001;
 
 	std::vector<double> res;
 	
 	double x = curr[0] + (k_x * ((2 * rand()) - RAND_MAX) * (rand() % 11));
 	double y = curr[1] + (k_y * ((2 * rand()) - RAND_MAX) * (rand() % 11));
+	//double z = curr[2] + (k_z * ((2 * rand()) - RAND_MAX) * (rand() % 11));
+	//double k = curr[3] + (k_k * ((2 * rand()) - RAND_MAX) * (rand() % 11));
 
 	//Второй вариант (около 10 000 000 итераций)(0,0001)
 	//double x = curr[0] + FRand(-1.0, 1.0) * 0.0001;
@@ -147,6 +152,10 @@ std::vector<double> GenerateCandidate(std::vector<double> curr, double x_min, do
 			res.push_back(y);
 		}
 	}
+
+	//res.push_back(z);
+	//res.push_back(k);
+
 	return res;
 }
 
@@ -179,8 +188,9 @@ std::vector<double> SimulatedAnnealing(std::vector<double> start, double initial
 	while (t > endTemperature)
 	{
 		candidate = GenerateCandidate(s_prev, x_min, x_max, y_min, y_max);
-		dE = TestFunction(candidate) - TestFunction(s_prev);
+		//dE = TestFunction(candidate) - TestFunction(s_prev);
 		//dE = horrific_function(candidate) - horrific_function(s_prev);
+		dE = plancton_function(candidate) - plancton_function(s_prev);
 		if (Transition(dE, t))
 		{
 			s_curr = candidate;
