@@ -3,6 +3,7 @@
 #include <cmath>
 #include <vector>
 #include "objective_functions.h"
+//#include "objective_functions_shinusi.h"
 
 struct Condition
 {
